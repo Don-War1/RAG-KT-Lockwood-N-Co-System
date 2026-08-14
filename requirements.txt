@@ -4,4 +4,3 @@ langchain-google-genai>=1.0.1
 langchain-community>=0.0.29
 langgraph>=0.1.14
 faiss-cpu==1.8.0
-sentence-transformers==2.6.1
