@@ -58,8 +58,9 @@ The final confrontation. The team breaks into the Fittes Mausoleum and discovers
 # ==========================================
 @st.cache_resource
 def initialize_agent():
-    # Ensure API Key is available
-    if "GEMINI_API_KEY" not in os.environ:
+    # Retrieve the key explicitly
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
         raise ValueError("GEMINI_API_KEY environment variable not set.")
 
     # A. Split the Document into Chunks
@@ -70,8 +71,11 @@ def initialize_agent():
     docs = [Document(page_content=KT_TEXT)]
     chunks = text_splitter.split_documents(docs)
 
-    # B. Create Embeddings and Vector Store (FAISS)
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+    # B. Create Embeddings and Vector Store (FAISS) - PASS THE KEY HERE
+    embeddings = GoogleGenerativeAIEmbeddings(
+        model="models/embedding-001",
+        google_api_key=api_key
+    )
     vector_store = FAISS.from_documents(chunks, embeddings)
 
     # C. Define the Agentic RAG Tool
@@ -87,10 +91,11 @@ def initialize_agent():
 
     tools = [retrieve_lockwood_context]
 
-    # D. Initialize LLM
+    # D. Initialize LLM - PASS THE KEY HERE
     llm = ChatGoogleGenerativeAI(
         model="gemini-1.5-flash",
-        temperature=0.1
+        temperature=0.1,
+        google_api_key=api_key
     )
 
     # E. Define Guardrails (System Prompt aligned with Notebook rules)
