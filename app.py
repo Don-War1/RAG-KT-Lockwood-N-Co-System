@@ -75,7 +75,7 @@ def initialize_system():
     chunks = text_splitter.split_documents(docs)
 
     # Step 2: Embeddings (Using the reliable text-embedding-004 model)
-    embeddings = GoogleGenerativeAIEmbeddings(model="text-embedding-001")
+    embeddings = GoogleGenerativeAIEmbeddings(model="gemini-embedding-001")
     vector_store = FAISS.from_documents(chunks, embeddings)
 
     # Step 3: Tool Definition
